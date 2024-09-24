@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using System.Globalization;
+using AT_PB.Models; // Certifique-se de que o namespace esteja correto para as classes
 
 
 namespace AT_PB.Services
@@ -59,6 +60,54 @@ namespace AT_PB.Services
                 // Tratamento genérico para outros erros
                 throw new Exception($"Erro ao escrever no arquivo CSV: {ex.Message}", ex);
             }
+        }
+
+        // Método para gerar o arquivo CSV com dados de exemplo
+        public void GerarCsv()
+        {
+            // Criando dados fictícios de exemplo
+            var usuarios = new List<Usuario>
+            {
+                new Usuario
+                {
+                    UsuarioId = 1,
+                    Nome = "João Silva",
+                    Email = "joao.silva@email.com",
+                    Telefone = "99999-9999",
+                    Senha = "senha_criptografada", // Note que a senha deve estar criptografada no sistema real
+                    PedidosReembolso = new List<PedidoReembolso>
+                    {
+                        new PedidoReembolso
+                        {
+                            Id = 1,
+                            DataSubmissao = DateTime.Now.AddDays(-5),
+                            ValorTotal = 350.00m,
+                            StatusPedido = new StatusPedido { Id = 1, DescricaoStatus = "Pendente" },
+                            DespesasMedicas = new List<DespesaMedica>
+                            {
+                                new DespesaMedica { Id = 1, TipoDespesa = "Consulta médica", Valor = 250.00m, DataDespesa = DateTime.Now.AddDays(-10) },
+                                new DespesaMedica { Id = 2, TipoDespesa = "Exame de sangue", Valor = 100.00m, DataDespesa = DateTime.Now.AddDays(-9) }
+                            },
+                            Documentos = new List<Documento>
+                            {
+                                new Documento { DocumentoId = 1, TipoDocumento = "Recibo", CaminhoArquivo = "/docs/recibo1.pdf" }
+                            },
+                            AnalisePedido = new AnalisePedido
+                            {
+                                Id = 1,
+                                Comentario = "Aguardando mais documentos",
+                                DataAnalise = DateTime.Now
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Gerando o arquivo CSV
+            string filePath = "usuarios.csv"; // Caminho do arquivo CSV
+            WriteCsv(filePath, usuarios); // Escrevendo os dados no CSV
+
+            Console.WriteLine($"Arquivo CSV '{filePath}' gerado com sucesso!");
         }
     }
 }

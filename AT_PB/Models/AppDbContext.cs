@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿
 using Microsoft.EntityFrameworkCore;
-using AT_PB.Models.Enums;
 
 namespace AT_PB.Models
 {
@@ -32,7 +30,7 @@ namespace AT_PB.Models
 
             // Relacionamento Um-para-Um
             modelBuilder.Entity<PedidoReembolso>()
-                .HasOne(p => p.Analise)
+                .HasOne(p => p.AnalisePedido)
                 .WithOne(a => a.PedidoReembolso)
                 .HasForeignKey<AnalisePedido>(a => a.PedidoReembolsoId);
         }

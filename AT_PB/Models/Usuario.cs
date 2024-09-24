@@ -7,7 +7,11 @@
         public string? Nome { get; set; }
         public string ?Email { get; set; }
         public string ?Telefone { get; set; }
+        public string ? Senha { get; set; }
+       
 
-        public List<PedidoReembolso>? PedidosReembolso { get; set; }= new List<PedidoReembolso>();
+        // Relacionamentos
+        public ICollection<PedidoReembolso>? PedidosReembolso { get; set; }
+        public ICollection<Notificacao>? Notificacoes { get; set; }
     }
 }

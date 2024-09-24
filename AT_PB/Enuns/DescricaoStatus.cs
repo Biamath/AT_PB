@@ -1,5 +1,5 @@
 ﻿namespace AT_PB.Models.Enums;
-    public enum StatusPedido
+    public enum DescricaoStatus
     {
         Pendente,   // 0
         Aprovado,   // 1

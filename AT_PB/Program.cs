@@ -13,6 +13,8 @@ namespace AT_PB
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddTransient<CsvService>();
+            builder.Services.AddScoped<PedidoReembolsoService>();
+
 
             var app = builder.Build();
 
@@ -50,23 +52,23 @@ namespace AT_PB
                     {
                         new PedidoReembolso
                         {
-                            PedidoReembolsoId = 1,
-                            DataPedido = DateTime.Now.AddDays(-5),
-                            Status = StatusPedido.Pendente,
+                          Id = 1,
+                            DataSubmissao = DateTime.Now.AddDays(-5),
+                           StatusPedidoId  = (int)DescricaoStatus.Pendente,
                             DespesasMedicas = new List<DespesaMedica>
                             {
-                                new DespesaMedica { DespesaMedicaId = 1, Descricao = "Consulta médica", Valor = 250 },
-                                new DespesaMedica { DespesaMedicaId = 2, Descricao = "Exame de sangue", Valor = 100 }
+                                new DespesaMedica { Id = 1, TipoDespesa = "Consulta médica", Valor = 250 },
+                                new DespesaMedica { Id = 2,TipoDespesa = "Exame de sangue", Valor = 100 }
                             },
                             Documentos = new List<Documento>
                             {
                                 new Documento { DocumentoId = 1, TipoDocumento = "Recibo", CaminhoArquivo = "/docs/recibo1.pdf" }
                             },
-                            Analise = new AnalisePedido
+                            AnalisePedido = new AnalisePedido
                             {
-                                AnalisePedidoId = 1,
-                                Analista = "Carlos Lima",
-                                Comentarios = "Aguardando mais documentos",
+                                Id = 1,
+                                
+                                Comentario = "Aguardando mais documentos",
                                 DataAnalise = DateTime.Now
                             }
                         }
