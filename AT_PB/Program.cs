@@ -1,6 +1,7 @@
 using AT_PB.Models;
 using AT_PB.Services;
 using AT_PB.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace AT_PB
 {
@@ -9,6 +10,10 @@ namespace AT_PB
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Configuração da string de conexão para SQLite
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();

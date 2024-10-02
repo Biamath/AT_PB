@@ -12,11 +12,14 @@ namespace AT_PB.Services
 
     public class PedidoReembolsoService
     {
-        private readonly string _dbPath = @"C:\Users\USUARIO\source\repos\AT_PB\AT_PB\data\PedidosReembolso.db";
-        private readonly string _connectionString = @"Filename=data/PedidosReembolso.db;Connection=shared;";
+        private readonly string _dbPath;
+        private readonly string _connectionString;
 
         public PedidoReembolsoService()
         {
+            _dbPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "PedidosReembolso.db");
+            _connectionString = $"Filename={_dbPath};Connection=shared;";
+
             var directory = Path.GetDirectoryName(_dbPath);
             if (!Directory.Exists(directory))
             {
