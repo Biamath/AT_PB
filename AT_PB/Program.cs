@@ -12,9 +12,10 @@ namespace AT_PB
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            // builder.Services.AddTransient<CsvService>();
+            // builder.Services.AddScoped<PedidoReembolsoService>();
             builder.Services.AddTransient<CsvService>();
             builder.Services.AddScoped<PedidoReembolsoService>();
-
 
             var app = builder.Build();
 

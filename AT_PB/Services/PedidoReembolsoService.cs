@@ -1,73 +1,75 @@
 ﻿
-using LiteDB;
-using System.Collections.Generic;
-using System.Linq;
-
 using AT_PB.Models;
-using System.IO;
+using LiteDB;
 
-
-namespace AT_PB.Services
+public class PedidoReembolsoService
 {
+    private readonly string _dbPath = @"C:\Users\USUARIO\source\repos\AT_PB\AT_PB\data\PedidosReembolso.db";
+    private readonly string _connectionString = @"Filename=data/PedidosReembolso.db;Connection=shared;";
 
-    public class PedidoReembolsoService
+    public PedidoReembolsoService()
     {
-        private readonly string _dbPath = @"C:\Users\USUARIO\source\repos\AT_PB\AT_PB\data\PedidosReembolso.db";
-        private readonly string _connectionString = @"Filename=data/PedidosReembolso.db;Connection=shared;";
-
-        public PedidoReembolsoService()
+        // Verifica se o _dbPath é nulo ou inválido
+        if (!string.IsNullOrWhiteSpace(_dbPath))
         {
             var directory = Path.GetDirectoryName(_dbPath);
-            if (!Directory.Exists(directory))
+
+            // Verifica se o 'directory' não é nulo
+            if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
             {
                 // Criar o diretório se não existir
                 Directory.CreateDirectory(directory);
             }
         }
-
-        public List<PedidoReembolso> GetPedidos()
+        else
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                return pedidos.FindAll().ToList();
-            }
+            throw new ArgumentNullException(nameof(_dbPath), "O caminho do banco de dados não pode ser nulo ou vazio.");
         }
+    }
 
-        public PedidoReembolso GetPedidoById(int id)
+    // Demais métodos da classe
+    public List<PedidoReembolso> GetPedidos()
+    {
+        using (var db = new LiteDatabase(_connectionString))
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                return pedidos.FindById(id);
-            }
+            var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
+            return pedidos.FindAll().ToList();
         }
+    }
 
-        public void AddPedido(PedidoReembolso pedido)
+    public PedidoReembolso GetPedidoById(int id)
+    {
+        using (var db = new LiteDatabase(_connectionString))
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Insert(pedido);
-            }
+            var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
+            return pedidos.FindById(id);
         }
+    }
 
-        public void UpdatePedido(PedidoReembolso pedido)
+    public void AddPedido(PedidoReembolso pedido)
+    {
+        using (var db = new LiteDatabase(_connectionString))
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Update(pedido);
-            }
+            var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
+            pedidos.Insert(pedido);
         }
+    }
 
-        public void DeletePedido(int id)
+    public void UpdatePedido(PedidoReembolso pedido)
+    {
+        using (var db = new LiteDatabase(_connectionString))
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Delete(id);
-            }
+            var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
+            pedidos.Update(pedido);
+        }
+    }
+
+    public void DeletePedido(int id)
+    {
+        using (var db = new LiteDatabase(_connectionString))
+        {
+            var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
+            pedidos.Delete(id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model IndexModel
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -34,6 +35,16 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+
+        <div>
+            <h3>Usuários</h3>
+            <ul>
+                @foreach (var usuario in Model.Usuarios)
+                {
+                        <li>@usuario.Nome (@usuario.Email)</li>
+                }
+            </ul>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">

@@ -1,4 +1,5 @@
-﻿namespace AT_PB.Models
+﻿
+namespace AT_PB.Models
 {
     public class Usuario
     {
