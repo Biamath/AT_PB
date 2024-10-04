@@ -3,6 +3,7 @@ using AT_PB.Services;
 using AT_PB.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace AT_PB
 {
 	public class Program
@@ -13,7 +14,7 @@ namespace AT_PB
 
             // Configuração da string de conexão para SQLite
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();

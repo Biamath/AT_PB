@@ -1,75 +1,53 @@
 ﻿
-using LiteDB;
-using System.Collections.Generic;
-using System.Linq;
-
 using AT_PB.Models;
-using System.IO;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace AT_PB.Services
 {
-
     public class PedidoReembolsoService
     {
-        private readonly string _dbPath;
-        private readonly string _connectionString;
+        private readonly AppDbContext _context;
 
-        public PedidoReembolsoService()
+        public PedidoReembolsoService(AppDbContext context)
         {
-            _dbPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "PedidosReembolso.db");
-            _connectionString = $"Filename={_dbPath};Connection=shared;";
-
-            var directory = Path.GetDirectoryName(_dbPath);
-            if (!Directory.Exists(directory))
-            {
-                // Criar o diretório se não existir
-                Directory.CreateDirectory(directory);
-            }
+            _context = context;
         }
 
         public List<PedidoReembolso> GetPedidos()
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                return pedidos.FindAll().ToList();
-            }
+            return _context.PedidosReembolso.Include(p => p.DespesasMedicas)
+                                            .Include(p => p.Documentos)
+                                            .Include(p => p.AnalisePedido)
+                                            .ToList();
         }
 
         public PedidoReembolso GetPedidoById(int id)
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                return pedidos.FindById(id);
-            }
+            return _context.PedidosReembolso.Include(p => p.DespesasMedicas)
+                                            .Include(p => p.Documentos)
+                                            .Include(p => p.AnalisePedido)
+                                            .FirstOrDefault(p => p.Id == id);
         }
 
         public void AddPedido(PedidoReembolso pedido)
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Insert(pedido);
-            }
+            _context.PedidosReembolso.Add(pedido);
+            _context.SaveChanges();
         }
 
         public void UpdatePedido(PedidoReembolso pedido)
         {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Update(pedido);
-            }
+            _context.PedidosReembolso.Update(pedido);
+            _context.SaveChanges();
         }
 
         public void DeletePedido(int id)
         {
-            using (var db = new LiteDatabase(_connectionString))
+            var pedido = _context.PedidosReembolso.Find(id);
+            if (pedido != null)
             {
-                var pedidos = db.GetCollection<PedidoReembolso>("pedidos");
-                pedidos.Delete(id);
+                _context.PedidosReembolso.Remove(pedido);
+                _context.SaveChanges();
             }
         }
     }
